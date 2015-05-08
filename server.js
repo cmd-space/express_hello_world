@@ -17,6 +17,8 @@ app.get('/users/:id', function(req, res){
     res.send('You requested the user with id: ' + req.params.id);
 });
 app.post('/users', function(req, res){
+    req.session.name = req.body.name;
+    console.log(req.session.name);
     console.log("POST DATA \n\n", req.body);
     res.redirect('/');
 });
@@ -24,7 +26,7 @@ app.set('view engine', 'ejs');
 // tell express to use static folder for static content
 app.use(express.static(__dirname + '/static'));
 app.set('views', __dirname + '/views');
-app.get('/users', function(request, response){
+app.get('/users', function(req, res){
     //hard coded user data
     var users_array = [
         {name: "Michael", email: "michael@codingdojo.com"},
@@ -32,7 +34,9 @@ app.get('/users', function(request, response){
         {name: "Rory", email: "rory@codingdojo.com"},
         {name: "Andrew", email: "andrew@codingdojo.com"}
     ];
-    response.render('users', {users: users_array});
+    req.session.name = req.body.name;
+    console.log(req.session.name);
+    res.render('users', {users: users_array});
 });
 // tell express app to listen on port 8000
 app.listen(8000, function(){
